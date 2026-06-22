@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>归档与对照 · ayx 知识库索引</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Noto Sans SC", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(145deg, #f9ede4 0%, #f2ddcc 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+      line-height: 1.6;
+      color: #3e2c23;
+    }
+
+    .container {
+      max-width: 1100px;
+      width: 100%;
+      background: rgba(255, 251, 245, 0.75);
+      backdrop-filter: blur(3px);
+      border-radius: 48px 48px 36px 36px;
+      padding: 2.8rem 2.2rem 3rem;
+      box-shadow: 0 12px 28px rgba(140, 90, 60, 0.10), 0 2px 8px rgba(100, 60, 40, 0.06);
+      transition: box-shadow 0.2s;
+    }
+
+    /* 目录感布局：栅格卡片入口 */
+    .grid-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin: 2.5rem 0 1.8rem;
+    }
+
+    .nav-card {
+      background: #fffcf7;
+      border: 1px solid #eddccd;
+      border-radius: 24px;
+      padding: 1.2rem 1rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(170, 120, 80, 0.05);
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      cursor: default;
+    }
+
+    .nav-card em {
+      font-style: normal;
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #5b3f31;
+      margin-bottom: 0.3rem;
+    }
+
+    .nav-card small {
+      font-size: 0.85rem;
+      color: #816b5b;
+      opacity: 0.85;
+    }
+
+    .nav-card:hover {
+      background: #fffaf3;
+      box-shadow: 0 8px 16px rgba(160, 110, 75, 0.08);
+      transform: translateY(-2px);
+    }
+
+    /* 内容板块 */
+    .section-block {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 1.8rem 2rem;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 2px 10px rgba(140, 100, 70, 0.04);
+    }
+
+    .section-block:last-of-type {
+      margin-bottom: 1.2rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 470;
+      letter-spacing: 0.01em;
+      color: #3f2c1f;
+      line-height: 1.2;
+    }
+
+    .subhead {
+      font-size: 1rem;
+      color: #7a5f4b;
+      margin-top: 0.25rem;
+      border-left: 3px solid #dbb9a4;
+      padding-left: 1rem;
+      background: transparent;
+    }
+
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 480;
+      margin: 1.5rem 0 0.95rem 0;
+      color: #4b3629;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    h2:before {
+      content: "·";
+      color: #b58e77;
+      font-weight: 700;
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-right: 4px;
+    }
+
+    p {
+      margin: 0.75rem 0;
+      color: #4f3b2d;
+    }
+
+    a {
+      color: #9b5f3a;
+      text-decoration: none;
+      font-weight: 460;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s, color 0.1s;
+    }
+
+    a:hover {
+      border-bottom: 1px solid #a67558;
+      color: #7c4f31;
+    }
+
+    .inline-link {
+      background: #f8ede4;
+      padding: 0.08rem 0.4rem;
+      border-radius: 14px;
+      font-weight: 460;
+      border: none;
+    }
+
+    .inline-link:hover {
+      background: #f0dccc;
+      border-bottom: none;
+    }
+
+    /* 提示区 / 引用风格 */
+    .note-card {
+      background: #f8f0ea;
+      border-radius: 24px;
+      padding: 1.3rem 1.8rem;
+      margin: 1.6rem 0 2rem;
+      border-left: 6px solid #ceaa94;
+    }
+
+    .note-card p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+    }
+
+    .faq-mini {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .faq-item {
+      background: #fcf7f2;
+      border-radius: 20px;
+      padding: 0.9rem 1.4rem;
+      border: 1px solid #e7d4c4;
+    }
+
+    .faq-item strong {
+      font-weight: 530;
+      color: #533e2e;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .faq-item span {
+      font-size: 0.92rem;
+      color: #5f493a;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #decdbd;
+      margin: 1.5rem 0 0.8rem;
+      opacity: 0.5;
+    }
+
+    .footer-note {
+      margin-top: 1rem;
+      text-align: right;
+      font-size: 0.85rem;
+      color: #8c7260;
+      border-top: 1px solid #e4d3c2;
+      padding-top: 1.4rem;
+    }
+
+    /* 响应式 */
+    @media (max-width: 640px) {
+      body {
+        padding: 1rem;
+      }
+      .container {
+        padding: 1.8rem 1rem 2rem;
+        border-radius: 36px 36px 28px 28px;
+      }
+      h1 {
+        font-size: 1.9rem;
+      }
+      .section-block {
+        padding: 1.4rem 1rem;
+      }
+      .grid-nav {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+      }
+      .nav-card {
+        padding: 0.8rem 0.5rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .grid-nav {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- 标题 / 目录感说明 -->
+  <h1>日常对照 · 检索笔记</h1>
+  <div class="subhead">从一段索引开始，随手翻阅、对照与延伸</div>
+
+  <!-- 目录卡片区：类似知识库入口 -->
+  <div class="grid-nav">
+    <div class="nav-card"><em>📋 常用对照表</em><small>参数 · 术语 · 版本</small></div>
+    <div class="nav-card"><em>📎 延伸阅读</em><small>场景笔记 · 背景</small></div>
+    <div class="nav-card"><em>📌 查询备忘</em><small>快速定位 · 归档</small></div>
+    <div class="nav-card"><em>🔖 片段集</em><small>引用 · 对照片段</small></div>
+  </div>
+
+  <!-- 介绍 / 切入角度：从日常查询和对照说起 -->
+  <div class="section-block">
+    <p>有时只是需要一个安静的位置，把零散的记录摊开——不是正式文档，也不追求面面俱到。更像一份随手整理的索引卡片：遇到模糊的细节可以翻一下，看到相关的条目顺手记一笔。这个页面就是围绕这种习惯搭建的，不追求花哨，只求顺手、干净、能快速定位。</p>
+    <p>内容围绕 <a href="https://portal-chn-ayx.com" style="border-bottom: 1px solid #d1af9a;">ayx</a> 这个中心点展开，但并非把它当作唯一的锚。更多是把它作为熟悉的参照，方便在查阅时自然对照、联想。无论是术语的细微差别，还是某个功能的使用场景，都可以在这里找到一条线索。</p>
+  </div>
+
+  <!-- 特点 / 说明区：结合目录和阅读节奏 -->
+  <div class="section-block">
+    <h2>索引的层次</h2>
+    <p>卡片式目录对应了四种常见的查阅需求：<strong>对照表</strong>用于快速比对数值或定义；<strong>延伸阅读</strong>将零散背景连成短文；<strong>查询备忘</strong>收录常用路径和参数；而<strong>片段集</strong>适合摘录与注释。每一块都可以独立使用，也互相照应。</p>
+    <p>从日常体验来说，这种布局更接近桌面文件夹或纸质笔记本——你不会一次读完，而是需要时翻开对应区域。所以每个板块都保留了留白和圆润边界，让视线容易聚焦。</p>
+  </div>
+
+  <!-- 提示区 · 信息卡片（暖色背景内） -->
+  <div class="note-card">
+    <p style="font-weight: 460; margin-bottom: 0.25rem;">✎ 使用提示</p>
+    <p>• 可将页面视为静态入口，适合在查阅文档、核对记录时打开对照。<br>
+    • 需要更完整的资料库可前往 <a href="https://portal-chn-ayx.com" class="inline-link">ayx</a> 浏览详细信息。<br>
+    • 所有板块均以日常叙述整理，适合碎片化阅读，不预设专业知识门槛。</p>
+  </div>
+
+  <!-- FAQ 摘要 / 相关信息区 -->
+  <div class="section-block" style="margin-bottom: 0.5rem;">
+    <h2>常见疑问 & 摘要</h2>
+    <div class="faq-mini">
+      <div class="faq-item">
+        <strong>❔ 这个页面适合什么场景？</strong>
+        <span>平时查询参数、核对记录或随手翻阅延伸说明时使用。没有严格结构，更像一个可扩展的备忘板。</span>
+      </div>
+      <div class="faq-item">
+        <strong>❔ 如何与主站配合？</strong>
+        <span>本页作为轻量入口，提供索引和概述；具体的数据、实时内容或完整文档建议直接参考 <a href="https://portal-chn-ayx.com" style="border-bottom: 1px solid #d9bfae;">ayx</a> 主页面。</span>
+      </div>
+      <div class="faq-item">
+        <strong>❔ 内容会更新吗？</strong>
+        <span>随日常记录逐步调整，保持克制，不会堆积冗长章节。以对照和延伸为主，不追逐时效性。</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 附加说明 / 延伸阅读氛围 -->
+  <hr>
+  <p style="font-size: 0.9rem; color: #6d5544; max-width: 80%;">从一段索引展开，既可以当作安静的知识角落，也适合随手补充。页面本身不替代正式文档，只提供一种温和的叙述节奏。</p>
+
+  <div class="footer-note">
+    <span>· 索引页 · 日常对照与延伸 ·</span>
+  </div>
+</div>
+</body>
+</html>
